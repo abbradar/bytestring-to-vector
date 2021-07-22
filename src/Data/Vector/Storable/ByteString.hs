@@ -24,7 +24,7 @@ sizeOfElem vec = sizeOf (undefined `asTypeOf` V.head vec)
 -- not be an issue.
 byteStringToVector :: (Storable a) => BS.ByteString -> V.Vector a
 byteStringToVector bs = vec where
-    vec = V.unsafeFromForeignPtr (castForeignPtr fptr) (scale off) (scale len)
+    vec = V.unsafeFromForeignPtr (castForeignPtr (fptr `plusForeignPtr` off)) 0 (scale len)
     (fptr, off, len) = BS.toForeignPtr bs
     scale = (`div` sizeOfElem vec)
 
